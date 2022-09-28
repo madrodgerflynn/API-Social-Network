@@ -1,25 +1,108 @@
-const User = require("../models/User");
+const { Video, User } = require("../models");
 
+//get all users
 module.exports = {
-  getUsers(req, res) {
-    User.find()
-      .then((users) => res.json(users))
+  getVideos(req, res) {
+    Video.find()
+      .then((videos) => res.json(videos))
       .catch((err) => res.status(500).json(err));
   },
-  getSingleUser(req, res) {
-    User.findOne({ _id: req.params.userId })
-      .select("-__v")
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user with that ID" })
-          : res.json(user)
+  //get single user
+  getSingleVideo(req, res) {
+    Video.findOne({ _id: req.params.videoId })
+      .then((video) =>
+        !video
+          ? res.status(404).json({ message: "No video with that ID" })
+          : res.json(video)
       )
       .catch((err) => res.status(500).json(err));
   },
   // create a new user
-  createUser(req, res) {
-    User.create(req.body)
-      .then((dbUserData) => res.json(dbUserData))
+  createVideo(req, res) {
+    Video.create(req.body)
+      .then((video) => {
+        return User.findOneAndUpdate(
+          { _id: req.body.userId },
+          { $addToSet: { videos: video._id } },
+          { new: true }
+        );
+      })
+      .then((user) =>
+        !user
+          ? res.status(404).json({
+              message: "Video created, but found no user with that ID",
+            })
+          : res.json("Created the video 🎉")
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
+  //update user
+  updateVideo(req, res) {
+    Video.findOneAndUpdate(
+      { _id: req.params.videoId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
+      .then((video) =>
+        !video
+          ? res.status(404).json({ message: "No video with this id!" })
+          : res.json(video)
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
+  //delete user
+  deleteVideo(req, res) {
+    Video.findOneAndRemove({ _id: req.params.videoId })
+      .then((video) =>
+        !video
+          ? res.status(404).json({ message: "No video with this id!" })
+          : User.findOneAndUpdate(
+              { videos: req.params.videoId },
+              { $pull: { videos: req.params.videoId } },
+              { new: true }
+            )
+      )
+      .then((user) =>
+        !user
+          ? res
+              .status(404)
+              .json({ message: "Video created but no user with this id!" })
+          : res.json({ message: "Video successfully deleted!" })
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+  // add new friend
+  addVideoResponse(req, res) {
+    Video.findOneAndUpdate(
+      { _id: req.params.videoId },
+      { $addToSet: { responses: req.body } },
+      { runValidators: true, new: true }
+    )
+      .then((video) =>
+        !video
+          ? res.status(404).json({ message: "No video with this id!" })
+          : res.json(video)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+  // Remove friend
+  removeVideoResponse(req, res) {
+    Video.findOneAndUpdate(
+      { _id: req.params.videoId },
+      { $pull: { reactions: { responseId: req.params.responseId } } },
+      { runValidators: true, new: true }
+    )
+      .then((video) =>
+        !video
+          ? res.status(404).json({ message: "No video with this id!" })
+          : res.json(video)
+      )
       .catch((err) => res.status(500).json(err));
   },
 };
