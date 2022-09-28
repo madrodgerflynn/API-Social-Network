@@ -5,7 +5,7 @@ const thoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
-      default: false,
+      required: false,
       minLength: 1,
       maxLength: 280,
     },
@@ -13,16 +13,14 @@ const thoughtSchema = new Schema(
       type: Date,
       default: Date.now, //current time stamp
     },
-    tags: [
-      {
-        type: String,
-        ref: "Tag",
-      },
-    ],
-    text: {
+    username: {
       type: String,
-      minLength: 15,
-      maxLength: 500,
+      required: true,
+    },
+
+    reactions: {
+      type: Array,
+      use: reactionSchema,
     },
   },
   {
@@ -33,12 +31,30 @@ const thoughtSchema = new Schema(
   }
 );
 
-// Create a virtual property `tagCount` that gets the amount of comments per user
+const reactionSchema = new Schema({
+  reactionId: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
+  reationBody: {
+    type: String,
+    required: true,
+    maxLength: 280,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 postSchema
-  .virtual("tagCount")
+  .virtual("reactionCount")
   // Getter
   .get(function () {
-    return this.tags.length;
+    return [this.reactions.length];
   });
 
 // Initialize our Post model

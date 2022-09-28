@@ -44,7 +44,7 @@ postSchema
   .virtual("friendCount")
   // Getter
   .get(function () {
-    return this.tags.length;
+    return [this.friends.length];
   });
 
 // Initialize our Post model
