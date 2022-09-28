@@ -1,47 +1,24 @@
 const { Schema, model } = require("mongoose");
 
 // Schema to create Post model
-const thoughtSchema = new Schema(
-  {
-    thoughtText: {
-      type: String,
-      default: false,
-      minLength: 1,
-      maxLength: 280,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    tags: [
-      {
-        type: String,
-        ref: "Tag",
-      },
-    ],
-    text: {
-      type: String,
-      minLength: 15,
-      maxLength: 500,
-    },
+const reactionSchema = new Schema({
+  reactionId: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
   },
-  {
-    toJSON: {
-      virtuals: true,
-    },
-    id: false,
-  }
-);
+  reationBody: {
+    type: String,
+    required: true,
+    maxLength: 280,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-// Create a virtual property `tagCount` that gets the amount of comments per user
-postSchema
-  .virtual("tagCount")
-  // Getter
-  .get(function () {
-    return this.tags.length;
-  });
-
-// Initialize our Post model
-const Post = model("post", postSchema);
-
-module.exports = Post;
+module.exports = reactionSchema;
