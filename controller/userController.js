@@ -78,7 +78,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // add new friend
-  addUserResponse(req, res) {
+  addUserThought(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
       { $addToSet: { responses: req.body } },
@@ -91,11 +91,11 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove friend
-  removeUserResponse(req, res) {
+  // Remove user thought
+  removeUserThought(req, res) {
     User.findOneAndRemove(
-      { _id: req.params.videoId },
-      { $pull: { reactions: { responseId: req.params.responseId } } },
+      { _id: req.params.userId },
+      { $pull: { reactions: { thoughtId: req.params.responseId } } },
       { runValidators: true, new: true }
     )
       .then((user) =>
