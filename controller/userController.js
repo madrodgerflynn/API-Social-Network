@@ -95,13 +95,13 @@ module.exports = {
   removeUserThought(req, res) {
     User.findOneAndRemove(
       { _id: req.params.userId },
-      { $pull: { reactions: { thoughtId: req.params.responseId } } },
+      { $pull: { reactions: { thoughtId: req.params.reactionId } } },
       { runValidators: true, new: true }
     )
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with this id!" })
-          : res.json(video)
+          : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
   },

@@ -15,6 +15,6 @@ router.route("/:userId").get(getSingleUser).put(updateUser).delete(deleteUser);
 
 router.route("/:userId/thought").post(addUserThought);
 
-router.route("/:userId/thought/:thoughtId");
+router.route("/:userId/thought/:thoughtId").delete(removeUserThought);
 
 module.exports = router;
