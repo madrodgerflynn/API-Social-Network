@@ -1,6 +1,6 @@
 const { Schema, Types } = require("mongoose");
 
-// Schema to create Post model
+// Schema to create reaction model
 const reactionSchema = new Schema({
   reactionId: {
     type: Schema.Types.ObjectId,
@@ -20,5 +20,12 @@ const reactionSchema = new Schema({
     default: Date.now,
   },
 });
+reactionSchema
+  .virtual("reactionCount")
+  // Getter
+  .get(function () {
+    return [this.reaction.length];
+  });
+const Reaction = model("reaction", reactionSchema);
 
-module.exports = reactionSchema;
+module.exports = Reaction;

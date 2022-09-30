@@ -31,14 +31,14 @@ const thoughtSchema = new Schema(
   }
 );
 
-postSchema
-  .virtual("reactionCount")
+thoughtSchema
+  .virtual("thoughtCount")
   // Getter
   .get(function () {
-    return [this.reactions.length];
+    return [this.reaction.length];
   });
 
-// Initialize our Post model
-const Post = model("post", postSchema);
+// Initialize our thought model
+const Thought = model("thought", thoughtSchema);
 
-module.exports = Post;
+module.exports = Thought;
