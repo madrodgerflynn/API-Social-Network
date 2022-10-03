@@ -65,26 +65,16 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with this id!" })
-          : User.findOneAndUpdate(
-              { thoughts: req.params.userId },
-              { $pull: { thoughts: req.params.userId } },
-              { new: true }
-            )
+          : res.json({ message: "Delete Successful" })
       )
-      .then((user) =>
-        !user
-          ? res
-              .status(404)
-              .json({ message: "User created but no user with this id!" })
-          : res.json({ message: "User successfully deleted!" })
-      )
+
       .catch((err) => res.status(500).json(err));
   },
   // add new friend
-  addUserThought(req, res) {
+  addFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $addToSet: { responses: req.body } },
+      { $addToSet: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
       .then((user) =>
@@ -94,11 +84,11 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove user thought
-  removeUserThought(req, res) {
-    User.findOneAndRemove(
+  // Remove friend
+  deleteFriend(req, res) {
+    User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { reactions: { thoughtId: req.params.reactionId } } },
+      { $pull: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
       .then((user) =>
