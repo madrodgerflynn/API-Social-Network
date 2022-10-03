@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 
 // Schema to create Post model
 const userSchema = new Schema(
@@ -10,7 +10,7 @@ const userSchema = new Schema(
       trim: true,
     },
     email: {
-      type: Date,
+      type: String,
       unique: true,
       require: true,
       match: [
@@ -21,13 +21,13 @@ const userSchema = new Schema(
     thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Thought",
+        ref: "thought",
       },
     ],
     friends: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
       },
     ],
   },
@@ -44,10 +44,10 @@ userSchema
   .virtual("friendCount")
   // Getter
   .get(function () {
-    return [this.friends.length];
+    return this.friends.length;
   });
 
 // Initialize our User model
 const User = model("user", userSchema);
 
-module.exports = userSchema;
+module.exports = User;
