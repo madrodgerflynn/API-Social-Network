@@ -39,7 +39,7 @@ const userSchema = new Schema(
   }
 );
 
-// Create a virtual property `tagCount` that gets the amount of comments per user
+// Create a virtual property `friendCount` that gets the amount of comments per user
 userSchema
   .virtual("friendCount")
   // Getter
@@ -50,4 +50,4 @@ userSchema
 // Initialize our User model
 const User = model("user", userSchema);
 
-module.exports = User;
+module.exports = userSchema;
