@@ -30,9 +30,9 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({
-              message: "",
+              message: "Thought created but no user found with that ID",
             })
-          : res.json(" Complete")
+          : res.json("Complete")
       )
       .catch((err) => {
         console.log(err);
