@@ -33,12 +33,5 @@ const reactionSchema = new Schema(
 function formatDate(date) {
   return date.toDateString();
 }
-// reactionSchema
-//   .virtual("reactionCount")
-//   // Getter
-//   .get(function () {
-//     return [this.reaction.length];
-//   });
-// const Reaction = model("reaction", reactionSchema);
 
 module.exports = reactionSchema;

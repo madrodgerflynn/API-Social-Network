@@ -23,24 +23,6 @@ module.exports = {
     User.create(req.body)
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
-    // .then((user) => {
-    //   return User.findOneAndUpdate(
-    //     // { _id: req.body.userId },
-    //     // { $addToSet: { users: user._id } },
-    //     // { new: true }
-    //   );
-    // })
-    // .then((user) =>
-    //   !user
-    //     ? res.status(404).json({
-    //         message: "User created, but found no user with that ID",
-    //       })
-    //     : res.json("User Complete")
-    // )
-    // .catch((err) => {
-    //   console.log(err);
-    //   res.status(500).json(err);
-    // });
   },
   //update user
   updateUser(req, res) {

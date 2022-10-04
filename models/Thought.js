@@ -19,10 +19,7 @@ const thoughtSchema = new Schema(
       required: true,
     },
 
-    reactions: {
-      type: Array,
-      use: [reactionSchema],
-    },
+    reactions: [reactionSchema],
   },
   {
     toJSON: {
