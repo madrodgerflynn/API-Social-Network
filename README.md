@@ -55,6 +55,6 @@ For any questions about this project, contact me directly at madrodgerflynn@gmai
 
 ---
 
-## Images
+## Walkthrough Video
 
-This is an area where any User images may be linked.
+[Video Walkthrough](https://watch.screencastify.com/v/ZuxNuBTTBrH3tg1VVvbW)
